@@ -39,7 +39,7 @@ int numChannels = 1;
   
 // Some globals: current X position where we're drawing data; width of the lines we're drawing
 int currentPosition = 0;
-int drawWidth = 1; //Speed of the drawing, the higher the faster
+int drawWidth = 15; //Speed of the drawing, the higher the faster
 float strokeSize = 2.0;
   
 // The names of the waves, in any order
@@ -94,6 +94,10 @@ void oscEvent(OscMessage theOscMessage) {
       }
     }
   }
+  if(theOscMessage.checkAddrPattern("/Stimulix/push1") == true) {
+    if(theOscMessage.get(0).floatValue() == 1)
+      restartEEG();
+  }
 }
   
 // This is where we actually draw the graphics onto the screen
@@ -128,7 +132,7 @@ void draw() {
     
       // For each of the buckets / wave types:
       for (int i=0; i<numBuckets; i++) {
-        println(curChannel);
+        //println(curChannel);
         // Specify the color for this wavetype
         int c = color(255/7.0*i, 255, 255);
         //println(i);
@@ -179,7 +183,7 @@ void restartEEG() {
 
 void printEEG() {
   println("PRINT ME");
-  saveFrame("eeg-#########.png");
+  saveFrame("C:/Users/Hugo/Dropbox/Screenshots/eeg/eeg-#########.png");
 }
 
 void resetValues() {

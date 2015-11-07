@@ -50,7 +50,6 @@ String waves[] = {
   "alpha_relative", "beta_relative", "gamma_relative"
 };
 int numBuckets = waves.length;
-boolean isFinished = false;
   
 // Store the current data as it comes in. lastPos contains the n-1th data point, and values contains the nth.
 float lastPos[][] = new float[numBuckets][numChannels];
@@ -111,83 +110,52 @@ void draw() {
   // The top and bottom position of where we're going to draw
   float top, bottom;
   
-  if(!isFinished) {
-    // For each channel:
-    for (int curChannel = 0; curChannel < numChannels; curChannel++) {
-       
-      // Specify the boundaries of where we're drawing
-      //top = map(curChannel, 0, numChannels, height, 30);
-      //bottom = map(curChannel+1, 0, numChannels, height, 30);
-      top = map(curChannel, 0, numChannels, height, 30);
-      bottom = map(curChannel+1, 0, numChannels, height, 30);
-      
-      // Draw a rectangle to clear where the text about each waveform is going to be
-      fill(bgColor);
-      noStroke();
-      rect(0, bottom-30, width, 30);
+  // For each channel:
+  for (int curChannel = 0; curChannel < numChannels; curChannel++) {
+     
+    // Specify the boundaries of where we're drawing
+    //top = map(curChannel, 0, numChannels, height, 30);
+    //bottom = map(curChannel+1, 0, numChannels, height, 30);
+    top = map(curChannel, 0, numChannels, height, 30);
+    bottom = map(curChannel+1, 0, numChannels, height, 30);
     
-      // For each of the buckets / wave types:
-      for (int i=0; i<numBuckets; i++) {
-        println(curChannel);
-        // Specify the color for this wavetype
-        int c = color(255/7.0*i, 255, 255);
-        //println(i);
-        
-        if(i == 0) {
-          c = color(255, 255, 0);
-        }
-        if(i == 1) {
-          c = color(255, 0, 255); 
-        }
-        if(i == 2) {
-          c = color(0, 255, 255); 
-        }
-         
-        // Create the text, talking about the waveform with its values
-        fill(c);
-        //textAlign(TOP, LEFT);
-        //text(waves[i] + "(" + str(int(values[i][curChannel]*100)) + ")", 15+i*100, bottom-15);
-         
-        // Draw the line of the waveform
-        stroke(c);
-        line(currentPosition, map(lastPos[i][curChannel], 0, 1, top-30, bottom) - height / 3, currentPosition+drawWidth, map(values[i][curChannel], 0, 1, top-30, bottom) - height / 3);
-        //println(currentPosition);
-        
-        // Update where we came from, for drawing the next line
-        lastPos[i][curChannel] = values[i][curChannel];
+    // Draw a rectangle to clear where the text about each waveform is going to be
+    fill(bgColor);
+    noStroke();
+    rect(0, bottom-30, width, 30);
+  
+    // For each of the buckets / wave types:
+    for (int i=0; i<numBuckets; i++) {
+  
+      // Specify the color for this wavetype
+      int c = color(255/7.0*i, 255, 255);
+      //println(i);
+      
+      if(i == 0) {
+        c = color(255, 255, 0);
       }
+      if(i == 1) {
+        c = color(255, 0, 255); 
+      }
+      if(i == 2) {
+        c = color(0, 255, 255); 
+      }
+       
+      // Create the text, talking about the waveform with its values
+      fill(c);
+      //textAlign(TOP, LEFT);
+      //text(waves[i] + "(" + str(int(values[i][curChannel]*100)) + ")", 15+i*100, bottom-15);
+       
+      // Draw the line of the waveform
+      stroke(c);
+      line(currentPosition, map(lastPos[i][curChannel], 0, 1, top-30, bottom) - height / 3, currentPosition+drawWidth, map(values[i][curChannel], 0, 1, top-30, bottom) - height / 3);
+       
+      // Update where we came from, for drawing the next line
+      lastPos[i][curChannel] = values[i][curChannel];
     }
   }
    
   // Update the current x position across the page, and wrap around when we hit the end
   currentPosition+=drawWidth;
-  if(currentPosition >= width)
-    isFinished = true;
-  //currentPosition %= width;
-  
-}
-
-void restartEEG() {fill(bgColor);
-  if(isFinished)
-    printEEG();
-  println("restart");
-  resetValues();
-  isFinished = false;
-  currentPosition = 0;
-}
-
-void printEEG() {
-  println("PRINT ME");
-  saveFrame("eeg-#########.png");
-}
-
-void resetValues() {
-  //values = null;
-  values = new float[numBuckets][numChannels];
-}
-
-void keyPressed() {
-  if (key == ' ') {
-    restartEEG();
-  }
+  currentPosition %= width;
 }

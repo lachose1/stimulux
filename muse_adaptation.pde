@@ -40,7 +40,7 @@ int numChannels = 1;
   
 // Some globals: current X position where we're drawing data; width of the lines we're drawing
 int currentPosition = 0;
-int drawWidth = 15; //Speed of the drawing, the higher the faster
+int drawWidth = 1; //Speed of the drawing, the higher the faster
 float strokeSize = 2.0;
   
 // The names of the waves, in any order
@@ -205,6 +205,8 @@ void restartEEG() {
 
 void printEEG() {
   println("PRINT ME");
+  filter(GRAY); 
+  filter(THRESHOLD, 0.9);
   saveFrame("C:/Users/Hugo/Dropbox/Screenshots/eeg/eeg-" + userName + ".png");
 }
 

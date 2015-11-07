@@ -32,6 +32,7 @@ OscP5 oscP5;
 NetAddress myRemoteLocation;
 
 color bgColor = color(255);
+PFont font;
   
 // Number of data channels
 //int numChannels = 4;
@@ -51,6 +52,7 @@ String waves[] = {
 };
 int numBuckets = waves.length;
 boolean isFinished = false;
+String userName;
   
 // Store the current data as it comes in. lastPos contains the n-1th data point, and values contains the nth.
 float lastPos[][] = new float[numBuckets][numChannels];
@@ -58,6 +60,8 @@ float values[][] = new float[numBuckets][numChannels];
   
 // Set up the program
 void setup() {
+  font = createFont("OratorStd.otf", 32);
+  textFont(font);
   // Specify the screen size
   //size(1920, 1080);
   fullScreen();
@@ -68,6 +72,10 @@ void setup() {
   // Set the background color of the screen
   background(bgColor);
   strokeWeight(strokeSize);
+  
+  background(bgColor);
+  
+  userName = generateUser();
   
   // Specify that we're in HSB color mode
   //colorMode(HSB);
@@ -109,8 +117,13 @@ void draw() {
   // Set the fill color to black, and turn off strokes
   fill(bgColor);
   noStroke();
+  
+  //clear();
   // Draw a rectangle to cover the background in black, before overwriting the wave data
-  rect(currentPosition, 0, drawWidth*5, height);
+  rect(currentPosition, 0, drawWidth*5+width, height);
+  rect(0, height - 200, width, height);
+  fill(color(0, 0, 0));
+  text(userName, width - 150, height - 75);
   
   // The top and bottom position of where we're going to draw
   float top, bottom;
@@ -155,6 +168,7 @@ void draw() {
         // Draw the line of the waveform
         stroke(c);
         line(currentPosition, map(lastPos[i][curChannel], 0, 1, top-30, bottom) - height / 3, currentPosition+drawWidth, map(values[i][curChannel], 0, 1, top-30, bottom) - height / 3);
+  
         //println(currentPosition);
         
         // Update where we came from, for drawing the next line
@@ -162,7 +176,7 @@ void draw() {
       }
     }
   }
-   
+  
   // Update the current x position across the page, and wrap around when we hit the end
   currentPosition+=drawWidth;
   if(currentPosition >= width)
@@ -171,10 +185,18 @@ void draw() {
   
 }
 
+String generateUser() {
+  //return "" + year() + month() + day() + hour() + minute() + second();
+  //return "" + String.format("%02d", hour()) + minute() + second();
+  return "" + String.format("%02d", hour()) + String.format("%02d", minute()) + String.format("%02d", second());
+}
+
 void restartEEG() {
-  //fill(bgColor);
   if(isFinished)
     printEEG();
+  userName = generateUser();
+  background(bgColor);
+  //fill(bgColor);
   println("restart");
   resetValues();
   isFinished = false;
@@ -183,7 +205,7 @@ void restartEEG() {
 
 void printEEG() {
   println("PRINT ME");
-  saveFrame("C:/Users/Hugo/Dropbox/Screenshots/eeg/eeg-#########.png");
+  saveFrame("C:/Users/Hugo/Dropbox/Screenshots/eeg/eeg-" + userName + ".png");
 }
 
 void resetValues() {

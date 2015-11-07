@@ -30,7 +30,7 @@ FEATURES TO ADD:
 // set up the OSC stuff
 OscP5 oscP5;
 NetAddress myRemoteLocation;
-
+  
 color bgColor = color(255);
 PFont font;
   
@@ -40,7 +40,7 @@ int numChannels = 1;
   
 // Some globals: current X position where we're drawing data; width of the lines we're drawing
 int currentPosition = 0;
-int drawWidth = 1; //Speed of the drawing, the higher the faster
+int drawWidth = 15; //Speed of the drawing, the higher the faster
 float strokeSize = 2.0;
   
 // The names of the waves, in any order
@@ -57,6 +57,8 @@ String userName;
 // Store the current data as it comes in. lastPos contains the n-1th data point, and values contains the nth.
 float lastPos[][] = new float[numBuckets][numChannels];
 float values[][] = new float[numBuckets][numChannels];
+
+PGraphics screenshot;
   
 // Set up the program
 void setup() {
@@ -76,6 +78,8 @@ void setup() {
   background(bgColor);
   
   userName = generateUser();
+  
+  screenshot = createGraphics(1080, 1080);
   
   // Specify that we're in HSB color mode
   //colorMode(HSB);
@@ -113,7 +117,9 @@ void oscEvent(OscMessage theOscMessage) {
 // wrapping around as the screen gets filled.
 // Each wave is drawn in a different color, and it also displays the names of the waves with their current values [scaled from 0-1 to 0-100], for each channel.
 void draw() {
-   
+  screenshot.beginDraw();
+  //screenshot.background(255);
+  screenshot.stroke(0);
   // Set the fill color to black, and turn off strokes
   fill(bgColor);
   noStroke();
@@ -124,6 +130,9 @@ void draw() {
   rect(0, height - 200, width, height);
   fill(color(0, 0, 0));
   text(userName, width - 150, height - 75);
+  screenshot.fill(0);
+  screenshot.strokeWeight(4);
+  screenshot.text(userName, 1080 - 150, height - 75);
   
   // The top and bottom position of where we're going to draw
   float top, bottom;
@@ -168,6 +177,7 @@ void draw() {
         // Draw the line of the waveform
         stroke(c);
         line(currentPosition, map(lastPos[i][curChannel], 0, 1, top-30, bottom) - height / 3, currentPosition+drawWidth, map(values[i][curChannel], 0, 1, top-30, bottom) - height / 3);
+        screenshot.line(currentPosition, map(lastPos[i][curChannel], 0, 1, top-30, bottom) - 300, currentPosition+drawWidth, map(values[i][curChannel], 0, 1, top-30, bottom) - 300);
   
         //println(currentPosition);
         
@@ -176,7 +186,7 @@ void draw() {
       }
     }
   }
-  
+  screenshot.endDraw();
   // Update the current x position across the page, and wrap around when we hit the end
   currentPosition+=drawWidth;
   if(currentPosition >= width)
@@ -205,9 +215,11 @@ void restartEEG() {
 
 void printEEG() {
   println("PRINT ME");
-  filter(GRAY); 
-  filter(THRESHOLD, 0.9);
+  //filter(GRAY); 
+  //filter(THRESHOLD, 0.9);
   saveFrame("C:/Users/Hugo/Dropbox/Screenshots/eeg/eeg-" + userName + ".png");
+  
+  screenshot.save("C:/Users/Hugo/Dropbox/Screenshots/eeg/eeg-pgraphics-" + userName + ".png");
 }
 
 void resetValues() {

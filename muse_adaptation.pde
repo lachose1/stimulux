@@ -167,7 +167,8 @@ void draw() {
   
 }
 
-void restartEEG() {fill(bgColor);
+void restartEEG() {
+  //fill(bgColor);
   if(isFinished)
     printEEG();
   println("restart");

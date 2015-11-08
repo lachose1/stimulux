@@ -165,81 +165,81 @@ void draw() {
   screenshotFonce.text(userName, 0, 0);
   screenshotFonce.popMatrix();
   
-  
-  // The top and bottom position of where we're going to draw
-  float top, bottom;
-  
-  if(!isFinished) {
-    // For each channel:
-    for (int curChannel = 0; curChannel < numChannels; curChannel++) {
-       
-      // Specify the boundaries of where we're drawing
-      //top = map(curChannel, 0, numChannels, height, 30);
-      //bottom = map(curChannel+1, 0, numChannels, height, 30);
-      top = map(curChannel, 0, numChannels, height, 30);
-      bottom = map(curChannel+1, 0, numChannels, height, 30);
-      
-      // Draw a rectangle to clear where the text about each waveform is going to be
-      fill(bgColor);
-      noStroke();
-      rect(0, bottom-30, width, 30);
+  if(frameCount % 3.0 == 0) {
+    // The top and bottom position of where we're going to draw
+    float top, bottom;
     
-      // For each of the buckets / wave types:
-      for (int i=0; i<numBuckets; i++) {
-        //println(curChannel);
-        // Specify the color for this wavetype
-        int c = color(255/7.0*i, 255, 255);
-        //println(i);
-        
-        if(i == 0) {
-          c = color(255, 255, 0);
-        }
-        if(i == 1) {
-          c = color(255, 0, 255); 
-        }
-        if(i == 2) {
-          c = color(0, 255, 255); 
-        }
+    if(!isFinished) {
+      // For each channel:
+      for (int curChannel = 0; curChannel < numChannels; curChannel++) {
          
-        // Create the text, talking about the waveform with its values
-        fill(c);
-        //textAlign(TOP, LEFT);
-        //text(waves[i] + "(" + str(int(values[i][curChannel]*100)) + ")", 15+i*100, bottom-15);
-         
-        // Draw the line of the waveform
-        stroke(c);
-        line(currentPosition, map(lastPos[i][curChannel], 0, 1, top-30, bottom) - height / 3, currentPosition+drawWidth, map(values[i][curChannel], 0, 1, top-30, bottom) - height / 3);
-        addParticle(currentPosition, int(map(values[i][curChannel], 0, 1, top-30, bottom) - height / 3), c);
+        // Specify the boundaries of where we're drawing
+        //top = map(curChannel, 0, numChannels, height, 30);
+        //bottom = map(curChannel+1, 0, numChannels, height, 30);
+        top = map(curChannel, 0, numChannels, height, 30);
+        bottom = map(curChannel+1, 0, numChannels, height, 30);
         
-        screenshot.line(currentPosition, map(lastPos[i][curChannel], 0, 1, top-30, bottom) - 300, currentPosition+drawWidth, map(values[i][curChannel], 0, 1, top-30, bottom) - 300);
-        screenshotFonce.line(currentPosition, map(lastPos[i][curChannel], 0, 1, top-30, bottom) - height / 3, currentPosition+drawWidth, map(values[i][curChannel], 0, 1, top-30, bottom) - height / 3);
-        //println(currentPosition);
-        
-        // Update where we came from, for drawing the next line
-        lastPos[i][curChannel] = values[i][curChannel];
+        // Draw a rectangle to clear where the text about each waveform is going to be
+        fill(bgColor);
+        noStroke();
+        rect(0, bottom-30, width, 30);
+      
+        // For each of the buckets / wave types:
+        for (int i=0; i<numBuckets; i++) {
+          //println(curChannel);
+          // Specify the color for this wavetype
+          int c = color(255/7.0*i, 255, 255);
+          //println(i);
+          
+          if(i == 0) {
+            c = color(255, 255, 0);
+          }
+          if(i == 1) {
+            c = color(255, 0, 255); 
+          }
+          if(i == 2) {
+            c = color(0, 255, 255); 
+          }
+           
+          // Create the text, talking about the waveform with its values
+          fill(c);
+          //textAlign(TOP, LEFT);
+          //text(waves[i] + "(" + str(int(values[i][curChannel]*100)) + ")", 15+i*100, bottom-15);
+           
+          // Draw the line of the waveform
+          stroke(c);
+          line(currentPosition, map(lastPos[i][curChannel], 0, 1, top-30, bottom) - height / 3, currentPosition+drawWidth, map(values[i][curChannel], 0, 1, top-30, bottom) - height / 3);
+          addParticle(currentPosition, int(map(values[i][curChannel], 0, 1, top-30, bottom) - height / 3), c);
+          
+          screenshot.line(currentPosition, map(lastPos[i][curChannel], 0, 1, top-30, bottom) - 300, currentPosition+drawWidth, map(values[i][curChannel], 0, 1, top-30, bottom) - 300);
+          screenshotFonce.line(currentPosition, map(lastPos[i][curChannel], 0, 1, top-30, bottom) - height / 3, currentPosition+drawWidth, map(values[i][curChannel], 0, 1, top-30, bottom) - height / 3);
+          //println(currentPosition);
+          
+          // Update where we came from, for drawing the next line
+          lastPos[i][curChannel] = values[i][curChannel];
+        }
       }
     }
-  }
-  screenshot.endDraw();
-  screenshotFonce.endDraw();
-  // Update the current x position across the page, and wrap around when we hit the end
-  currentPosition+=drawWidth;
-  if(currentPosition >= width) {
-    isFinished = true;
-  }
-  if(isFinished && !printed) {
-    printed = true;
-    printEEG();
-  }
-  for (int i = particles.size()-1; i >= 0; i--) {
-    Particle p = particles.get(i);
-    p.run();
-    if (p.isDead()) {
-      particles.remove(i);
+    screenshot.endDraw();
+    screenshotFonce.endDraw();
+    // Update the current x position across the page, and wrap around when we hit the end
+    currentPosition+=drawWidth;
+    if(currentPosition >= width) {
+      isFinished = true;
     }
+    if(isFinished && !printed) {
+      printed = true;
+      printEEG();
+    }
+    for (int i = particles.size()-1; i >= 0; i--) {
+      Particle p = particles.get(i);
+      p.run();
+      if (p.isDead()) {
+        particles.remove(i);
+      }
+    }
+    //currentPosition %= width;
   }
-  //currentPosition %= width;
-  
 }
 
 void addParticle(int x, int y, color c) {

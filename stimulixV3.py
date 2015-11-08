@@ -42,19 +42,34 @@ time.sleep(3)
 # Print greeting image
 while(True):
 	if os.path.exists('gfx/print.png'):
+
+		# Resize of the art image
+		imgOeuvre = Image.open('gfx/bearings.png')
+		imgOeuvre = imgOeuvre.resize((384,384 ))
+		imgOeuvre = imgOeuvre.rotate(90)
+
+		# Resize of the art image
 		image = Image.open('gfx/print.png')
-		# imageRotated = image
-		imageRotated = image.rotate(90)
-		imageRotated = imageRotated.resize((384*image.size[1]/image.size[0],384 *2 ))
+		imageRotated = image.resize((384*2,384 ))
+		imageRotated = imageRotated.rotate(90)
 		imageRotated = imageRotated.convert("L")
 		
-		
+		# Printing of the two tickets
+		# Tickets 1
+		printer.println("#stimulix #museomixmtl")
 		printer.printImage(imageRotated, True)
+		printer.printImage(imgOeuvre, False)
 		printer.feed(3)
 		time.sleep(5)
+
+		# Tickets 2
+		printer.println("#stimulix #museomixmtl")
 		printer.printImage(imageRotated, True)
+		printer.printImage(imgOeuvre, False)
 		printer.feed(3)
 		time.sleep(3)
+
+		# remove temporary graph
 		os.remove('gfx/print.png')
 	else:
 		time.sleep(3)

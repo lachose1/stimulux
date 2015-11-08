@@ -31,7 +31,7 @@ FEATURES TO ADD:
 OscP5 oscP5;
 NetAddress myRemoteLocation;
   
-color bgColor = color(255);
+color bgColor = color(0);
 PFont font;
 PFont bigFont;
   
@@ -64,7 +64,7 @@ PGraphics screenshot;
 PGraphics screenshotFonce;
 
 ArrayList<Particle> particles;
-float lifespan = 10.0;
+float lifespan = 50.0;
 
 // Set up the program
 void setup() {
@@ -205,8 +205,7 @@ void draw() {
         // Draw the line of the waveform
         stroke(c);
         line(currentPosition, map(lastPos[i][curChannel], 0, 1, top-30, bottom) - height / 3, currentPosition+drawWidth, map(values[i][curChannel], 0, 1, top-30, bottom) - height / 3);
-        addParticle(currentPosition, int(map(values[i][curChannel], 0, 1, top-30, bottom) - height / 3), c);
-        
+        addParticle(width / 2, height / 2);
         screenshot.line(currentPosition, map(lastPos[i][curChannel], 0, 1, top-30, bottom) - 300, currentPosition+drawWidth, map(values[i][curChannel], 0, 1, top-30, bottom) - 300);
         screenshotFonce.line(currentPosition, map(lastPos[i][curChannel], 0, 1, top-30, bottom) - height / 3, currentPosition+drawWidth, map(values[i][curChannel], 0, 1, top-30, bottom) - height / 3);
         //println(currentPosition);
@@ -238,8 +237,8 @@ void draw() {
   
 }
 
-void addParticle(int x, int y, color c) {
-  particles.add(new Particle(new PVector(x, y), new PVector(0.4,random(-0.5, 0.5)), lifespan, c));
+void addParticle(int x, int y) {
+  particles.add(new Particle(new PVector(x, y), new PVector(0,0.2), lifespan));
 }
 
 void initScreenshots() {

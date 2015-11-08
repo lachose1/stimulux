@@ -11,7 +11,7 @@ class ParticleSystem {
   }
 
   void addParticle() {
-    particles.add(new Particle(origin, new PVector(0,0.1), 100.0));
+    particles.add(new Particle(origin, new PVector(0,0.1), 100.0, color(255)));
   }
 
   void run() {

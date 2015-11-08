@@ -62,11 +62,19 @@ float values[][] = new float[numBuckets][numChannels];
 
 PGraphics screenshot;
 PGraphics screenshotFonce;
+
+ArrayList<ParticleSystem> particleSystems;
+PVector fp;
+PImage particle;
   
 // Set up the program
 void setup() {
   font = createFont("OratorStd.otf", 32);
   bigFont = createFont("OratorStd.otf", 96);
+  
+  particleSystems = new ArrayList<ParticleSystem>();
+  particle = loadImage("particle.png");
+  
   // Specify the screen size
   //size(1920, 1080);
   fullScreen();
@@ -199,6 +207,7 @@ void draw() {
         // Draw the line of the waveform
         stroke(c);
         line(currentPosition, map(lastPos[i][curChannel], 0, 1, top-30, bottom) - height / 3, currentPosition+drawWidth, map(values[i][curChannel], 0, 1, top-30, bottom) - height / 3);
+        
         screenshot.line(currentPosition, map(lastPos[i][curChannel], 0, 1, top-30, bottom) - 300, currentPosition+drawWidth, map(values[i][curChannel], 0, 1, top-30, bottom) - 300);
         screenshotFonce.line(currentPosition, map(lastPos[i][curChannel], 0, 1, top-30, bottom) - height / 3, currentPosition+drawWidth, map(values[i][curChannel], 0, 1, top-30, bottom) - height / 3);
         //println(currentPosition);
@@ -207,6 +216,22 @@ void draw() {
         lastPos[i][curChannel] = values[i][curChannel];
       }
     }
+  }
+  println(particleSystems.size());
+  for (int i = particleSystems.size ()-1; i >= 0; i--) {
+    ParticleSystem p = particleSystems.get(i);
+    p.addParticle();
+    p.run();
+    //p.Origin = new PVector(p.x, p.y);
+    /*
+    fill(255, 50);
+    stroke(255, 50);
+    line(p.x, p.y, width/2, height*.25);
+    line(p.x, p.y, width/2, height*.75);
+    line(p.x, p.y, width*.25, height/2);
+    line(p.x, p.y, width*.75, height/2);
+    ellipse(p.x, p.y, 3, 3);
+    */
   }
   screenshot.endDraw();
   screenshotFonce.endDraw();
@@ -268,7 +293,7 @@ void printEEG() {
   //saveFrame("C:/Users/Hugo/Dropbox/Screenshots/eeg/eeg-" + userName + ".png");
   screenshotFonce.save("Z:/Python-Thermal-Printer/gfx/print.png");
   //saveFrame("Z:/Python-Thermal-Printer/gfx/print.png");
-  //screenshotFonce.save("Z:/Python-Thermal-Printer/gfx/print.png");
+  screenshotFonce.save("Z:/Python-Thermal-Printer/gfx/print.png");
   screenshot.background(bgColor);
   screenshot.clear();
   screenshotFonce.background(bgColor);

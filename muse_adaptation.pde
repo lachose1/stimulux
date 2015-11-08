@@ -205,7 +205,7 @@ void draw() {
         // Draw the line of the waveform
         stroke(c);
         line(currentPosition, map(lastPos[i][curChannel], 0, 1, top-30, bottom) - height / 3, currentPosition+drawWidth, map(values[i][curChannel], 0, 1, top-30, bottom) - height / 3);
-        
+        addParticle(currentPosition, int(map(values[i][curChannel], 0, 1, top-30, bottom) - height / 3));
         screenshot.line(currentPosition, map(lastPos[i][curChannel], 0, 1, top-30, bottom) - 300, currentPosition+drawWidth, map(values[i][curChannel], 0, 1, top-30, bottom) - 300);
         screenshotFonce.line(currentPosition, map(lastPos[i][curChannel], 0, 1, top-30, bottom) - height / 3, currentPosition+drawWidth, map(values[i][curChannel], 0, 1, top-30, bottom) - height / 3);
         //println(currentPosition);
@@ -226,9 +226,19 @@ void draw() {
     printed = true;
     printEEG();
   }
-    
+  for (int i = particles.size()-1; i >= 0; i--) {
+    Particle p = particles.get(i);
+    p.run();
+    if (p.isDead()) {
+      particles.remove(i);
+    }
+  }
   //currentPosition %= width;
   
+}
+
+void addParticle(int x, int y) {
+  particles.add(new Particle(new PVector(x, y), new PVector(0,0.2), lifespan));
 }
 
 void initScreenshots() {

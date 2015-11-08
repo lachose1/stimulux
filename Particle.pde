@@ -28,8 +28,8 @@ class Particle {
 
   // Method to display
   void display() {
-    stroke(0,Lifespan);
-    fill(0,Lifespan);
+    stroke(255,Lifespan);
+    fill(255,Lifespan);
     ellipse(Location.x,Location.y,2,2);
   }
   

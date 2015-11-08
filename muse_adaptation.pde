@@ -66,6 +66,9 @@ PGraphics screenshotFonce;
 ArrayList<Particle> particles;
 float lifespan = 10.0;
 
+//PShader blur;
+//boolean shaderEnabled = true;  
+
 // Set up the program
 void setup() {
   font = createFont("OratorStd.otf", 32);
@@ -94,6 +97,7 @@ void setup() {
   //screenshot.background(bgColor);
   //screenshotFonce.background(bgColor);
   initScreenshots();
+
   // Specify that we're in HSB color mode
   //colorMode(HSB);
 }

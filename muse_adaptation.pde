@@ -290,8 +290,8 @@ void printEEG() {
   //screenshotFonce.save("C:/Users/Hugo/Dropbox/Screenshots/eeg/eeg-pgraphics-" + userName + ".png");
   //screenshot.save("Z:/Python-Thermal-Printer/gfx/print.png");
   screenshotFonce.save("C:/Users/Hugo/Dropbox/Screenshots/eeg/eeg-raspi" + userName + ".png");
-  //saveFrame("C:/Users/Hugo/Dropbox/Screenshots/eeg/eeg-" + userName + ".png");
-  screenshotFonce.save("Z:/Python-Thermal-Printer/gfx/print.png");
+  saveFrame("C:/Users/Hugo/Dropbox/Screenshots/eeg/eeg-" + userName + ".png");
+  //screenshotFonce.save("Z:/Python-Thermal-Printer/gfx/print.png");
   //saveFrame("Z:/Python-Thermal-Printer/gfx/print.png");
   screenshotFonce.save("Z:/Python-Thermal-Printer/gfx/print.png");
   screenshot.background(bgColor);

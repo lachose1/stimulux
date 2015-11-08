@@ -41,8 +41,8 @@ int numChannels = 1;
   
 // Some globals: current X position where we're drawing data; width of the lines we're drawing
 int currentPosition = 0;
-int drawWidth = 1; //Speed of the drawing, the higher the faster
-float strokeSize = 15.0; //10 = pas pire
+int drawWidth = 15; //Speed of the drawing, the higher the faster
+float strokeSize = 3.0; //10 = pas pire
   
 // The names of the waves, in any order
 //String waves[] = {
@@ -84,10 +84,10 @@ void setup() {
   
   screenshot = createGraphics(1080, 1080);
   screenshotFonce = createGraphics(1920, 1080);
-  screenshot.beginDraw();
-  screenshotFonce.beginDraw();
-  screenshot.background(bgColor);
-  screenshotFonce.background(bgColor);
+  
+  //screenshot.background(bgColor);
+  //screenshotFonce.background(bgColor);
+  initScreenshots();
   // Specify that we're in HSB color mode
   //colorMode(HSB);
 }
@@ -124,7 +124,8 @@ void oscEvent(OscMessage theOscMessage) {
 // wrapping around as the screen gets filled.
 // Each wave is drawn in a different color, and it also displays the names of the waves with their current values [scaled from 0-1 to 0-100], for each channel.
 void draw() {
-
+  screenshot.beginDraw();
+  screenshotFonce.beginDraw();
   
   //screenshot.background(255);
   screenshot.stroke(0);
@@ -145,8 +146,9 @@ void draw() {
   screenshot.strokeWeight(4);
   screenshot.text(userName, 1080 - 150, height - 75);
   screenshotFonce.fill(0);
-  screenshotFonce.strokeWeight(4);
-  screenshotFonce.text(userName, width - 150, height - 75);
+  screenshotFonce.strokeWeight(15);
+  screenshotFonce.textFont(bigFont);
+  screenshotFonce.text(userName, width / 2 - 90, height - 75);
   
   
   // The top and bottom position of where we're going to draw
@@ -217,6 +219,13 @@ void draw() {
   
 }
 
+void initScreenshots() {
+  screenshot.beginDraw();
+  screenshotFonce.beginDraw();
+  screenshot.background(bgColor);
+  screenshotFonce.background(bgColor);
+}
+
 String generateUser() {
   //return "" + year() + month() + day() + hour() + minute() + second();
   //return "" + String.format("%02d", hour()) + minute() + second();
@@ -228,6 +237,7 @@ void restartEEG() {
   //  printEEG();
   userName = generateUser();
   background(bgColor);
+  initScreenshots();
   //screenshot.background(bgColor);
   //screenshot.clear();
   //screenshotFonce.background(bgColor);
@@ -242,15 +252,17 @@ void restartEEG() {
 
 void printEEG() {
   println("PRINT ME");
-  filter(GRAY); 
-  filter(THRESHOLD, 0.9);
+  //filter(GRAY); 
+  //filter(THRESHOLD, 0.9);
   //saveFrame("C:/Users/Hugo/Dropbox/Screenshots/eeg/eeg-" + userName + ".png");
   
   //screenshot.save("C:/Users/Hugo/Dropbox/Screenshots/eeg/eeg-pgraphics-" + userName + ".png");
   //screenshotFonce.save("C:/Users/Hugo/Dropbox/Screenshots/eeg/eeg-pgraphics-" + userName + ".png");
   //screenshot.save("Z:/Python-Thermal-Printer/gfx/print.png");
+  screenshotFonce.save("C:/Users/Hugo/Dropbox/Screenshots/eeg/eeg-raspi" + userName + ".png");
   saveFrame("C:/Users/Hugo/Dropbox/Screenshots/eeg/eeg-" + userName + ".png");
-  saveFrame("Z:/Python-Thermal-Printer/gfx/print.png");
+  screenshotFonce.save("Z:/Python-Thermal-Printer/gfx/print.png");
+  //saveFrame("Z:/Python-Thermal-Printer/gfx/print.png");
   //screenshotFonce.save("Z:/Python-Thermal-Printer/gfx/print.png");
   screenshot.background(bgColor);
   screenshot.clear();

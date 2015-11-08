@@ -66,7 +66,7 @@ PGraphics screenshotFonce;
 // Set up the program
 void setup() {
   font = createFont("OratorStd.otf", 32);
-  bigFont = createFont("OratorStd.otf", 48);
+  bigFont = createFont("OratorStd.otf", 96);
   // Specify the screen size
   //size(1920, 1080);
   fullScreen();
@@ -83,7 +83,7 @@ void setup() {
   userName = generateUser();
   
   screenshot = createGraphics(1080, 1080);
-  screenshotFonce = createGraphics(1920, 1080);
+  screenshotFonce = createGraphics(1920, 1080); //THIS IS THE ONE TO SEND TO THE RASPI
   
   //screenshot.background(bgColor);
   //screenshotFonce.background(bgColor);
@@ -146,9 +146,14 @@ void draw() {
   screenshot.strokeWeight(4);
   screenshot.text(userName, 1080 - 150, height - 75);
   screenshotFonce.fill(0);
-  screenshotFonce.strokeWeight(15);
+  screenshotFonce.strokeWeight(16);
   screenshotFonce.textFont(bigFont);
-  screenshotFonce.text(userName, width / 2 - 90, height - 75);
+  screenshotFonce.pushMatrix();
+  //translate(width / 2 - 90, height - 75);
+  screenshotFonce.translate(100, height - 15);
+  screenshotFonce.rotate(-HALF_PI);
+  screenshotFonce.text(userName, 0, 0);
+  screenshotFonce.popMatrix();
   
   
   // The top and bottom position of where we're going to draw
@@ -260,7 +265,7 @@ void printEEG() {
   //screenshotFonce.save("C:/Users/Hugo/Dropbox/Screenshots/eeg/eeg-pgraphics-" + userName + ".png");
   //screenshot.save("Z:/Python-Thermal-Printer/gfx/print.png");
   screenshotFonce.save("C:/Users/Hugo/Dropbox/Screenshots/eeg/eeg-raspi" + userName + ".png");
-  saveFrame("C:/Users/Hugo/Dropbox/Screenshots/eeg/eeg-" + userName + ".png");
+  //saveFrame("C:/Users/Hugo/Dropbox/Screenshots/eeg/eeg-" + userName + ".png");
   screenshotFonce.save("Z:/Python-Thermal-Printer/gfx/print.png");
   //saveFrame("Z:/Python-Thermal-Printer/gfx/print.png");
   //screenshotFonce.save("Z:/Python-Thermal-Printer/gfx/print.png");

@@ -41,7 +41,7 @@ int numChannels = 1;
   
 // Some globals: current X position where we're drawing data; width of the lines we're drawing
 int currentPosition = 0;
-int drawWidth = 15; //Speed of the drawing, the higher the faster
+int drawWidth = 1; //Speed of the drawing, the higher the faster
 float strokeSize = 3.0; //10 = pas pire
   
 // The names of the waves, in any order

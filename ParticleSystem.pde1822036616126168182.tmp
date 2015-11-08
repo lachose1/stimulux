@@ -1,0 +1,44 @@
+//CODE INSPIRÉ DE Daniel Shiffman's code http://www.learningprocessing.com
+// A class to describe a group of Particles
+// An ArrayList is used to manage the list of Particles 
+
+class ParticleSystem {
+  PImage Img;
+  ArrayList<Particle> Particles;
+  PVector Origin;
+  int ParticlesCount;
+  float AccelerationSeed;
+  float PaddingFactor;
+  PVector SeedColor;
+  int CurrentParticlesNo;
+
+  ParticleSystem(PVector location, int particlesCount, PImage img, float accelerationSeed, float paddingFactor, PVector seedColor) {
+    Origin = location.get();
+    Particles = new ArrayList<Particle>();
+    ParticlesCount = particlesCount;
+    Img = img;
+    AccelerationSeed = accelerationSeed;
+    PaddingFactor = paddingFactor;
+    SeedColor = seedColor;
+    for (int i = 0; i < ParticlesCount; i++) {
+      Particles.add(new Particle(Origin, new PVector(randomGaussian() * AccelerationSeed, randomGaussian() * AccelerationSeed), 100.0, Img, PaddingFactor, SeedColor));         // Add "num" amount of particles to the arraylist
+    }
+    CurrentParticlesNo = ParticlesCount;
+  }
+
+  void addParticle() {
+    Particles.add(new Particle(Origin, new PVector(randomGaussian() * AccelerationSeed, randomGaussian() * AccelerationSeed), 100.0, Img, PaddingFactor, SeedColor));
+    CurrentParticlesNo++;
+  }
+
+  void run() { //Mise à jour de toutes les particules
+    for (int i = Particles.size()-1; i >= 0; i--) {
+      Particle p = Particles.get(i);
+      p.run();
+      if (p.isDead()) {
+        Particles.remove(i);
+        CurrentParticlesNo--;
+      }
+    }
+  }
+}
